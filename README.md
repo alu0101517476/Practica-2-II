@@ -82,6 +82,8 @@ public class ColorChanger : MonoBehaviour
 
 A continuación se encuentra un vídeo en el que se demuestra el comportamiento del cubo al asignarle el Script:
 
+![Gif cubo](Img/Ejercicio%201.gif)
+
 2. Ejercicio 2: Magnitud vectores
 
 Para desarrollar el ejercicio, se ha creado un objeto 3D Esfera, a la cual se le ha añadido el color rojo para resaltarla. Posteriormente se ha creado el siguiente Script y se le ha asignado a la Esfera. 
