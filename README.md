@@ -378,8 +378,299 @@ public class ArrowSpeedReporter : MonoBehaviour
 De esta manera, cuando se pusen o bien WASD o las flechas el cubo calcula y muestra por consola `velocidad * valorHorizontal` en caso del eje horizontal y `velocidad * valorVertical` en el del ejer vertical.
 En el siguiente vídeo se muestra el funcionamiento del script:
 
-# **PONER VIDEO DEL EJERCICIO 7 PULSANDO LAS TECLAS**
+![Ejercicio 6](Img/WASD.gif)
 
 7. Ejercicio 7: Tecla H con la función de disparo
 
-# **HECHO, ESCRIBIR TODOS LOS PASOS QUE HICISTE, QUE TE DIJO EL CHATGPT Y MOSTRAR CAPTURA CUANDO APRIETAS LA H**
+Para completar el ejercicio propuesto, en el `Input Manager`, concretamente en: `Edit → Project Settings → Input Manager → Axes`, auménte el `Size` en `Axes` de 30 a 31 y al último elemento lo llamé `Disparo`. Acto seguido, en `Positive Button` escribí `h`, en `Type` seleccioné `Key or Mouse Button`. Después de eso, añadí al EmptyObject que creé en el ejercicio 5, el siguiente Script:
+
+```C#
+using UnityEngine;
+using UnityEngine.InputSystem;   // <- necesario para Keyboard.current
+
+public class DisparoNuevo : MonoBehaviour
+{
+    void Update()
+    {
+        // Detecta si la tecla H fue presionada en este frame
+        if (Keyboard.current.hKey.wasPressedThisFrame)
+        {
+            Debug.Log("¡Disparo activado con la tecla H!");
+        }
+    }
+}
+
+```
+
+Con esto, al abrir la consola, y ejecutar la escena, si pulso `h` se mostrará el mensaje por consola *¡Disparo activado!*
+En la siguiente imagen se demuestra el funcionamiento del Script:
+
+![Ejercicio 7](Img/Ejercicio%207.png)
+
+8. Ejercicio 8: Movimiento del Cubo con Vector de Dirección y Velocidad
+
+## 🎯 Objetivo
+Para cumplir con lo que dicta el enunciado, he calculado el desplazamiento mediante la función `Translate(x, y, z)`, siendo `(x, y, z)` las componentes de `moveDirection`. La velocidad inicial es mayor que 1 y el cubo parte de una posición `y = 0`. Para ello, he creado un cubo 3D de color naranja esta vez, al cual le he añadido el siguiente Script:
+
+```C#
+using UnityEngine;
+
+public class MoveWithDirection : MonoBehaviour
+{
+    [Header("Parámetros (editar en el Inspector)")]
+    public Vector3 moveDirection = new Vector3(1f, 0f, 0f);
+    public float speed = 2f;
+    [Tooltip("True = mover en ejes locales del cubo. False = en ejes globales.")]
+    public bool useLocalSpace = true;
+
+    [Header("Inicialización")]
+    [Tooltip("Colocar el cubo a y=0 al empezar la escena.")]
+    public bool forceStartYZero = true;
+
+    void Start()
+    {
+        if (forceStartYZero)
+        {
+            Vector3 p = transform.position;
+            p.y = 0f;
+            transform.position = p;
+        }
+    }
+
+    void Update()
+    {
+        Space refSpace = useLocalSpace ? Space.Self : Space.World;
+
+        transform.Translate(
+            moveDirection.x * speed * Time.deltaTime,
+            moveDirection.y * speed * Time.deltaTime,
+            moveDirection.z * speed * Time.deltaTime,
+            refSpace
+        );
+    }
+}
+
+```
+
+El desplazamiento aplicado en cada frame es proporcional al vector de dirección, a la velocidad y al tiempo transcurrido entre frames:
+
+\[
+\Delta \mathbf{p} = \mathbf{moveDirection} \cdot \text{speed} \cdot \Delta t
+\]
+
+El uso de `Time.deltaTime` garantiza que el movimiento sea independiente de los FPS.  
+El parámetro `useLocalSpace` permite conmutar entre movimiento **local** y global.
+A continuación comentaremos todas las situaciones indicadas en el enunciado de la práctica:
+
+**a) Duplicar las coordenadas de la dirección del movimiento**
+
+- **Configuración:**  
+  `moveDirection = (1, 0, 0)` → `(2, 0, 0)` con la misma `speed`.
+
+- **Resultado:**  
+  El cubo se mueve en la misma dirección, pero el desplazamiento por frame se duplica, por lo que duplicar `moveDirection` multiplica por 2 la magnitud del desplazamiento, manteniendo la trayectoria.  
+
+**b) Duplicar la velocidad manteniendo la dirección del movimiento**
+
+- **Configuración:**  
+  `moveDirection = (1, 0, 0)`, `speed = 2` → `speed = 4`.
+
+- **Resultado:**  
+  La trayectoria es idéntica al caso anterior, pero el cubo se mueve al doble de velocidad. Por lo tanto, duplicar `speed` o `moveDirection` produce el mismo efecto sobre el **módulo del desplazamiento**.  
+  Solo cambia cuánto se avanza por unidad de tiempo, no la dirección.
+
+**c) Velocidad menor que 1**
+
+- **Configuración:**  
+  `speed = 0.5`, `moveDirection` constante.
+
+- **Resultado:**  
+  El cubo se mueve más lentamente; el desplazamiento por segundo se reduce en proporción directa a `speed`.
+
+**d) Posición inicial del cubo con y > 0**
+
+- **Configuración:**  
+  Cubo inicial a `y = 3`, `moveDirection = (1, 0, 0)`.
+
+- **Resultado:**  
+  El cubo se desplaza de forma paralela al suelo a la altura `y = 3`.  
+  Si `moveDirection` tuviera componente Y, por ejemplo `(1, 1, 0)`, se movería en diagonal ascendente a la posición inicial. Por lo tanto, la altura inicial no altera el modelo de movimiento, solo el plano en el que se produce y queda claro que el componente Y del vector determina si el movimiento incluye ascenso o descenso.
+
+**e) Movimiento relativo al sistema local vs mundial**
+
+- **Configuración:**  
+  `useLocalSpace = true` (local) y `false` (global), cubo rotado 45° sobre Y, `moveDirection = (1, 0, 0)`.
+
+- **Resultado:**  
+  - En **Space.World**, el cubo se mueve en **+X global**, ignorando su rotación.  
+  - En **Space.Self**, el cubo se mueve en su **eje local X**, por lo que la trayectoria en el mundo es **diagonal** respecto al plano global. Por tanto, cambiar entre local y global no altera la magnitud del desplazamiento, pero sí su dirección espacial. El movimiento local sigue la orientación del objeto y el global, la del mundo.
+
+9. Ejercicio 9: Movimiento cubo y esfera con las teclas
+Para resolver el ejercicio planteado, lo que hice fue añadir al EmptyObject ya existente y mencionado en anteriores ejercicios el siguiente Script:
+
+```C#
+ using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem; // Nuevo Input System (Unity 6.x)
+#endif
+
+public class MoveCubeAndSphere : MonoBehaviour
+{
+    [Header("Referencias")]
+    public Transform cube;    // arrastra aquí tu Cubo
+    public Transform sphere;  // arrastra aquí tu Esfera
+
+    [Header("Velocidades (u/s)")]
+    public float cubeSpeed = 5f;    // velocidad del cubo
+    public float sphereSpeed = 5f;  // velocidad de la esfera
+
+    [Header("Espacio de traslación")]
+    [Tooltip("Si está activo: mueve según ejes locales del objeto. Si no: ejes globales.")]
+    public bool useLocalSpace = false;
+
+    private Space SpaceMode => useLocalSpace ? Space.Self : Space.World;
+
+    void Update()
+    {
+        // --- CUBO: flechas ---
+        if (cube != null)
+        {
+            Vector2 arrow = ReadArrows(); // x: ←/→  |  y: ↑/↓
+            Vector3 delta = new Vector3(arrow.x, arrow.y, 0f) * cubeSpeed * Time.deltaTime;
+            cube.Translate(delta, SpaceMode);
+        }
+
+        // --- ESFERA: WASD ---
+        if (sphere != null)
+        {
+            Vector2 wasd = ReadWASD(); // x: A/D  |  y: W/S
+            Vector3 delta = new Vector3(wasd.x, wasd.y, 0f) * sphereSpeed * Time.deltaTime;
+            sphere.Translate(delta, SpaceMode);
+        }
+    }
+
+    // Lee flechas
+    private Vector2 ReadArrows()
+    {
+        float x = 0f, y = 0f;
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.leftArrowKey.isPressed)  x -= 1f;
+            if (Keyboard.current.rightArrowKey.isPressed) x += 1f;
+            if (Keyboard.current.upArrowKey.isPressed)    y += 1f;
+            if (Keyboard.current.downArrowKey.isPressed)  y -= 1f;
+            return new Vector2(x, y);
+        }
+#endif
+        // Respaldo: Input Manager (Old)
+        x = (Input.GetKey(KeyCode.LeftArrow)  ? -1f : 0f) + (Input.GetKey(KeyCode.RightArrow) ? 1f : 0f);
+        y = (Input.GetKey(KeyCode.UpArrow)    ?  1f : 0f) + (Input.GetKey(KeyCode.DownArrow)  ? -1f : 0f);
+        return new Vector2(Mathf.Clamp(x, -1f, 1f), Mathf.Clamp(y, -1f, 1f));
+    }
+
+    // Lee WASD
+    private Vector2 ReadWASD()
+    {
+        float x = 0f, y = 0f;
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.aKey.isPressed) x -= 1f;
+            if (Keyboard.current.dKey.isPressed) x += 1f;
+            if (Keyboard.current.wKey.isPressed) y += 1f;
+            if (Keyboard.current.sKey.isPressed) y -= 1f;
+            return new Vector2(x, y);
+        }
+#endif
+        // Respaldo: Input Manager (Old)
+        x = (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
+        y = (Input.GetKey(KeyCode.W) ?  1f : 0f) + (Input.GetKey(KeyCode.S) ? -1f : 0f);
+        return new Vector2(Mathf.Clamp(x, -1f, 1f), Mathf.Clamp(y, -1f, 1f));
+    }
+}
+
+```
+
+De esta manera, el cubo se moverá respondiendo a las flechas y la Esfera con w-a-s-d, comportandose de la manera que indicaba el enunciado del ejercicio actual. A continuación se pueden apreciar dos gifs, el primero corresponde al movimiento del Cubo que en este caso cree para el ejercicio y que tiene el color amarillo. En el segundo gif, se aprecia lo mismo pero para la Esfera.
+
+![Cubo](Img/Cubo%20Amarillo.gif)
+
+
+![Esfera](Img/Esfera%20amarilla.gif)
+
+10. Ejercicio 10: Adaptación movimiento ejercicio 4
+Para desarrollar el siguiente ejercicio se crearon 3 objetos 3D básicos, un cubo, un cilindro y una esfera, en este caso los 3 de color negro para diferenciarlos. Después, se creó un script en C# el cual se asoció a la esfera con el siguiente código:
+
+```C#
+using UnityEngine;
+
+public class SphereDistanceAndDeltaMove : MonoBehaviour
+{
+    [Header("Referencias (asigna o autodetecta por Tag)")]
+    public Transform cube;              // arrástralo desde la escena o déjalo vacío y usa tags
+    public Transform cylinder;          // arrástralo desde la escena o déjalo vacío y usa tags
+    public string cubeTag = "cube";     // Tag del cubo (si quieres autodetectar)
+    public string cylinderTag = "cylinder"; // Tag del cilindro (si quieres autodetectar)
+
+    [Header("Movimiento (proporcional al tiempo)")]
+    public Vector3 moveDirection = new Vector3(1f, 0f, 0f); // dirección editable en Inspector
+    public float speed = 2f;                                 // unidades/segundo (> 0)
+    public bool useLocalSpace = false;                       // true = ejes locales, false = ejes globales
+
+    [Header("Consola (distancias)")]
+    [Tooltip("Segundos entre impresiones para no saturar la consola.")]
+    public float logEverySeconds = 0.5f;
+
+    private float _logTimer = 0f;
+
+    void Start()
+    {
+        // Autodetección por Tag si faltan referencias
+        if (cube == null)
+        {
+            GameObject go = GameObject.FindWithTag(cubeTag);
+            if (go != null) cube = go.transform;
+        }
+        if (cylinder == null)
+        {
+            GameObject go = GameObject.FindWithTag(cylinderTag);
+            if (go != null) cylinder = go.transform;
+        }
+
+        // Avisos útiles si algo falta
+        if (cube == null)
+            Debug.LogWarning("[SphereDistanceAndDeltaMove] No se encontró el cubo (asigna 'cube' en Inspector o Tag correcto).");
+        if (cylinder == null)
+            Debug.LogWarning("[SphereDistanceAndDeltaMove] No se encontró el cilindro (asigna 'cylinder' en Inspector o Tag correcto).");
+    }
+
+    void Update()
+    {
+        // 1) Movimiento proporcional al tiempo transcurrido entre frames
+        //    Δp = moveDirection * speed * Δt
+        Space space = useLocalSpace ? Space.Self : Space.World;
+        Vector3 step = moveDirection * (speed * Time.deltaTime);
+        transform.Translate(step, space);
+
+        // 2) Distancias a cubo y cilindro (impresión periódica)
+        _logTimer += Time.deltaTime;
+        if (_logTimer >= logEverySeconds)
+        {
+            float dCube = cube != null ? Vector3.Distance(transform.position, cube.position) : float.NaN;
+            float dCylinder = cylinder != null ? Vector3.Distance(transform.position, cylinder.position) : float.NaN;
+
+            Debug.Log($"[Esfera] Distancia a Cubo: {dCube:F3} | Distancia a Cilindro: {dCylinder:F3} | Pos: {transform.position}");
+            _logTimer = 0f;
+        }
+    }
+}
+
+```
+Gracias a este Script, la esfera se mueve de forma continua y uniforme gracias a `Time.deltaTime`, además, la consola muestra periódicamente en la consola la distancia actual entre la esfera, el cubo y el cilindro. Finalmente, el movimiento y las distancias se actualizan en tiempo real durante la ejecución del juego.
+
+En el siguiente vídeo se muestra la ejecución y funcionamiento del Script:
+
+![Ejercicio 10](Img/Ejercicio%2010.gif)
+
+11. Ejercicio 11: Adaptación movimiento ejercicio 5
