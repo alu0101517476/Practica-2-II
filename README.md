@@ -674,3 +674,63 @@ En el siguiente vídeo se muestra la ejecución y funcionamiento del Script:
 ![Ejercicio 10](Img/Ejercicio%2010.gif)
 
 11. Ejercicio 11: Adaptación movimiento ejercicio 5
+
+Para este ejercicio, lo que he hecho ha sido crear un Cubo y una Esfera, en este caso de color morado para que se diferencien y añadirle al cubo un Script con el siguiente código: 
+
+```C#
+using UnityEngine;
+
+public class CubeChaseSphere : MonoBehaviour
+{
+    [Header("Referencia del objetivo")]
+    public Transform sphere;            // Arrastra aquí la esfera
+
+    [Header("Parámetros de movimiento")]
+    [Min(0.01f)] public float speed = 3f;       // Unidades/segundo (constante)
+    [Tooltip("Distancia a la que se considera que el cubo 'ha llegado' al objetivo.")]
+    public float stoppingDistance = 0.05f;
+
+    void Update()
+    {
+        if (sphere == null) return;
+
+        // 1) Vector que une cubo -> esfera
+        Vector3 toTarget = sphere.position - transform.position;
+
+        // 2) No modificar altura: proyectamos en el plano XZ (anulamos Y)
+        toTarget.y = 0f;
+
+        // 3) Si ya estamos muy cerca, no mover (evita vibración)
+        if (toTarget.sqrMagnitude <= stoppingDistance * stoppingDistance)
+            return;
+
+        // 4) Normalizar para que la magnitud sea 1 → dirección pura (no depende de la distancia)
+        Vector3 dir = toTarget.normalized;
+
+        // 5) Avance constante: velocidad * deltaTime (independiente de FPS)
+        Vector3 step = dir * speed * Time.deltaTime;
+
+        // 6) Trasladar en ejes del mundo para respetar la dirección calculada
+        transform.Translate(step, Space.World);
+    }
+
+#if UNITY_EDITOR
+    // Dibuja una línea en la escena para visualizar la dirección
+    void OnDrawGizmosSelected()
+    {
+        if (sphere == null) return;
+        Vector3 from = transform.position;
+        Vector3 to = sphere.position; to.y = from.y; // misma altura (Y constante)
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(from, to);
+        Gizmos.DrawSphere(to, 0.05f);
+    }
+#endif
+}
+
+```
+
+Después de hacer esto, lo que hice fue seleccionar el cubo y en el inspector en el componente `CubeChaseSphere` que es como se llama el Script añadido al cubo, arrastré la esfera al campo Sphere. De esta manera, cuando ejecutamos el cubo se mueve hasta alcanzar a la esfera, parando en ese momento. 
+En el siguiente GIF, se puede comprobar el funcionamiento del Script:
+
+![Ejercicio 11](Img/Ejercicio%2011.gif)
