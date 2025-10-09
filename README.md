@@ -422,7 +422,6 @@ En la siguiente imagen se demuestra el funcionamiento del Script:
 
 ### **8. Ejercicio 8: Movimiento del Cubo con Vector de Dirección y Velocidad**
 
-## 🎯 Objetivo
 Para cumplir con lo que dicta el enunciado, he calculado el desplazamiento mediante la función `Translate(x, y, z)`, siendo `(x, y, z)` las componentes de `moveDirection`. La velocidad inicial es mayor que 1 y el cubo parte de una posición `y = 0`. Para ello, he creado un cubo 3D de color naranja esta vez, al cual le he añadido el siguiente Script:
 
 ```C#
