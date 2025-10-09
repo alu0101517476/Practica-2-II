@@ -734,3 +734,201 @@ Después de hacer esto, lo que hice fue seleccionar el cubo y en el inspector en
 En el siguiente GIF, se puede comprobar el funcionamiento del Script:
 
 ![Ejercicio 11](Img/Ejercicio%2011.gif)
+
+Ejercicio 12: Modificación ejercicio 11
+
+Este ejercicio se resuelve de manera muy similar al ejercicio 11, de manera que en este el cubo rota y mira siempre hacia la esfera. Para resolverlo cree un cubo y una esfera de color Cian y adjunte al cubo el siguient Script:
+
+```C#
+using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem; // Soporte para el nuevo Input System (Unity 6.x)
+#endif
+
+public class CubeLookAndChase : MonoBehaviour
+{
+    [Header("Referencias")]
+    [Tooltip("Arrastra aquí la esfera que el cubo debe perseguir.")]
+    public Transform sphere;
+
+    [Header("Movimiento del CUBO (mirando a la esfera)")]
+    [Min(0.01f)] public float cubeSpeed = 3f;          // unidades/segundo (constante)
+    [Tooltip("Distancia para considerar que 'llegó' y evitar vibraciones.")]
+    public float stoppingDistance = 0.05f;
+    [Tooltip("Mantener la altura del cubo (Y) fija durante el movimiento.")]
+    public bool keepCubeYLevel = true;
+
+    [Header("Pruebas: movimiento de la ESFERA con WASD")]
+    public bool enableSphereWASD = true;
+    public float sphereSpeed = 4f;                     // unidades/segundo
+    [Tooltip("Movimiento de la esfera en plano XZ (Y fija).")]
+    public bool sphereMoveOnXZ = true;
+
+    void Update()
+    {
+        if (sphere == null) return;
+
+        // ==========================
+        // 1) MOVER ESFERA (pruebas)
+        // ==========================
+        if (enableSphereWASD)
+        {
+            Vector2 input = ReadWASD(); // x: A/D, y: W/S
+            Vector3 deltaSphere;
+
+            if (sphereMoveOnXZ)
+            {
+                // Plano XZ: W/S = Z, A/D = X  (Y constante)
+                deltaSphere = new Vector3(input.x, 0f, input.y) * sphereSpeed * Time.deltaTime;
+            }
+            else
+            {
+                // Plano XY: W/S = Y, A/D = X  (Z constante)
+                deltaSphere = new Vector3(input.x, input.y, 0f) * sphereSpeed * Time.deltaTime;
+            }
+
+            sphere.Translate(deltaSphere, Space.World);
+        }
+
+        // ==========================================
+        // 2) ORIENTAR CUBO: eje Z+ apunta a la esfera
+        // ==========================================
+        Vector3 lookTarget = sphere.position;
+
+        if (keepCubeYLevel)
+        {
+            // Mantener la altura del cubo: igualamos Y del objetivo a la Y del cubo
+            lookTarget.y = transform.position.y;
+        }
+
+        // LookAt rota el cubo para que su forward (Z+) apunte al objetivo
+        transform.LookAt(lookTarget, Vector3.up);
+
+        // ==========================================
+        // 3) AVANZAR HACIA LA ESFERA A VELOCIDAD CONSTANTE
+        //    - No depende de la distancia (dirección normalizada implícita al usar forward)
+        //    - Independiente de FPS (Time.deltaTime)
+        //    - Movimiento en espacio LOCAL para usar su Z+ tras el LookAt
+        // ==========================================
+        // Comprobación de llegada (distancia horizontal si mantuvimos Y)
+        Vector3 toTarget = lookTarget - transform.position;
+        if (toTarget.sqrMagnitude > (stoppingDistance * stoppingDistance))
+        {
+            Vector3 stepLocalForward = Vector3.forward * (cubeSpeed * Time.deltaTime);
+            transform.Translate(stepLocalForward, Space.Self); // avanzar en Z+ local
+        }
+    }
+
+    // Lee WASD (nuevo Input System si está disponible; si no, usa Input clásico)
+    private Vector2 ReadWASD()
+    {
+        float x = 0f, y = 0f;
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.aKey.isPressed) x -= 1f;
+            if (Keyboard.current.dKey.isPressed) x += 1f;
+            if (Keyboard.current.wKey.isPressed) y += 1f;
+            if (Keyboard.current.sKey.isPressed) y -= 1f;
+            // Normaliza a -1..1 sin diagonales más rápidas
+            Vector2 v = new Vector2(x, y);
+            return v.sqrMagnitude > 1f ? v.normalized : v;
+        }
+#endif
+        // Respaldo: Input Manager (Old)
+        x = (Input.GetKey(KeyCode.A) ? -1f : 0f) + (Input.GetKey(KeyCode.D) ? 1f : 0f);
+        y = (Input.GetKey(KeyCode.W) ?  1f : 0f) + (Input.GetKey(KeyCode.S) ? -1f : 0f);
+        Vector2 vv = new Vector2(x, y);
+        return vv.sqrMagnitude > 1f ? vv.normalized : vv;
+    }
+
+#if UNITY_EDITOR
+    // Gizmos para depurar: ver la línea objetivo en la escena
+    void OnDrawGizmosSelected()
+    {
+        if (sphere == null) return;
+        Gizmos.color = Color.cyan;
+        Vector3 from = transform.position;
+        Vector3 to = sphere.position;
+        if (keepCubeYLevel) to.y = from.y;
+        Gizmos.DrawLine(from, to);
+        Gizmos.DrawSphere(to, 0.06f);
+    }
+#endif
+}
+
+```
+
+Después de añadir este Script al cubo, en el inspector del cubo añadí la esfera. En el siguiente GIF se puede apreciar el funcionamiento del Script al ejecutar:
+
+![Ejercicio 12](Img/Ejercicio%2012.gif)
+
+Ejercicio 13: Avanzar hacia adelante mediante el eje Horizontal
+
+Para compltar el ejercicio, cree un cubo 3D de color verde azulado y le añadí el siguiente Script:
+
+```C#
+using UnityEngine;
+
+public class RotateAndAdvance : MonoBehaviour
+{
+    [Header("Entrada")]
+    [Tooltip("Eje del Input Manager (Old). Por defecto: Horizontal")]
+    public string horizontalAxis = "Horizontal";
+
+    [Header("Movimiento")]
+    [Min(0.01f)] public float moveSpeed = 5f;        // unidades/segundo
+    [Min(0.01f)] public float rotationSpeed = 120f;  // grados/segundo
+
+    [Header("Opciones")]
+    [Tooltip("Bloquear la altura (Y) mientras avanza.")]
+    public bool lockY = false;
+    public float fixedY = 0f;
+
+    [Tooltip("Dibuja un rayo para ver la dirección forward (Z+).")]
+    public bool debugRay = true;
+    public float rayLength = 1.5f;
+
+    void Start()
+    {
+        if (lockY)
+        {
+            var p = transform.position;
+            p.y = fixedY;
+            transform.position = p;
+        }
+    }
+
+    void Update()
+    {
+        // 1) Leer el eje Horizontal (-1..1) para girar en Y (yaw)
+        float h = Input.GetAxis(horizontalAxis); // Left/Right o A/D, según Input Manager
+        float yaw = h * rotationSpeed * Time.deltaTime;
+        transform.Rotate(0f, yaw, 0f, Space.Self);
+
+        // 2) Avanzar SIEMPRE hacia adelante (Z+) del objeto
+        //    OJO: transform.forward es la dirección Z+ del objeto en espacio de mundo.
+        Vector3 step = transform.forward * (moveSpeed * Time.deltaTime);
+        transform.position += step; // equivalente a Translate(step, Space.World)
+
+        // 3) (Opcional) Mantener Y fija
+        if (lockY)
+        {
+            var p = transform.position;
+            p.y = fixedY;
+            transform.position = p;
+        }
+
+        // 4) Depuración visual
+        if (debugRay)
+        {
+            Debug.DrawRay(transform.position, transform.forward * rayLength, Color.cyan);
+        }
+    }
+}
+
+```
+
+De esta manera, el cubo cuando le das a ad, rota de dirección y avanza hacia esa dirección. En el siguiente vídeo se puede apreciar este comportamiento:
+
+![Ejercicio 13](Img/Ejercicio%2013.gif)
