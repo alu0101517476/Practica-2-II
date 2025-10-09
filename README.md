@@ -7,7 +7,6 @@ Email: alu0101517476@ull.edu.es
 ----
 
 # Índice
-# 📘 Índice Interactivo
 
 - [Ejercicio 1: Script colores](#1-ejercicio-1-script-colores)
 - [Ejercicio 2: Magnitud vectores](#2-ejercicio-2-magnitud-vectores)
