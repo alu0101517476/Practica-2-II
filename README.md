@@ -228,7 +228,7 @@ En la siguiente imagen se puede comprobar que el Script funciona correctamente a
 
 ### **5. Ejercicio 5: Vectores numéricos**
 
-Para realizar el ejercicio, lo primero que he hecho ha sido crear 3 objetos 3D básicos, los cuales son una Esfera, un Cubo y un Cilindro en la misma escena. Después cree 2 Scripts, el primero se llama `DesplazamientoObjeto.cs`, el cual fue asignado a cada uno de estos 3 objetos. Para finalizar cree un EmptyObject el cual le asigné un nuevo script el cual llamé `MarcadorColocacion.cs`. Acto seguido en el inspector del EmptyObject, asigné los 3 objetos 3D básicos de la siguiente forma:
+Para realizar el ejercicio, lo primero que he hecho ha sido crear 3 objetos 3D básicos, los cuales son una Esfera, un Cubo y un Cilindro en la misma escena. Después cree 2 Scripts, el primero se llama `DesplazamientoObjeto.cs`, el cual fue asignado a cada uno de estos 3 objetos. Para finalizar cree un EmptyObject al cual le asigné un nuevo script el cual llamé `MarcadorColocacion.cs`. Acto seguido en el inspector del EmptyObject, asigné los 3 objetos 3D básicos de la siguiente forma:
 - Objeto A: Sphere Green
 
 - Objeto B: Cube Green
