@@ -26,7 +26,7 @@ Email: alu0101517476@ull.edu.es
 
 Descripción del trabajo realizado
 
-1. Ejercicio 1: Script colores
+### **1. Ejercicio 1: Script colores**
 
 Para realizar el ejercicio, he hecho el siguiente script y lo he asignado a un cubo.
 Código del Script:
@@ -97,7 +97,7 @@ A continuación se encuentra un vídeo en el que se demuestra el comportamiento 
 
 ![Gif cubo](Img/Ejercicio%201.gif)
 
-2. Ejercicio 2: Magnitud vectores
+### **2. Ejercicio 2: Magnitud vectores**
 
 Para desarrollar el ejercicio, se ha creado un objeto 3D Esfera, a la cual se le ha añadido el color rojo para resaltarla. Posteriormente se ha creado el siguiente Script y se le ha asignado a la Esfera. 
 El código del Script es el siguiente:
@@ -157,7 +157,7 @@ El resultado de la ejecución del Script al iniciar el juego es el siguiente:
 
 Como se puede apreciar, en la consola aparecen las magnitudes de A y B, el ángulo que forman los dos vectores, la distancia entre ellos y que vector está a más altura, que en este caso es el A. Para que salgan estos valores en la consola, le hemos asignado valores a los vectores al iniciar la ejecución.
 
-3. Ejercicio 3: Mostrar en pantalla el vector con la posición de la esfera.
+### **3. Ejercicio 3: Mostrar en pantalla el vector con la posición de la esfera.**
 
 Para resolver el ejercicio desarrollé un Script, el cual he añadido a la esfera con el siguiente código que lo que hace es mostrar por consola la posición de la esfera:
 
@@ -183,7 +183,7 @@ En la siguiente imagen se encuentra la comprobación de que el Script funciona:
 
 ![Ejercicio 3](Img/Ejercicio%203.png)
 
-4. Ejercicio 4: Mostrar la distancia del cubo y el cilindro de la esfera
+### **4. Ejercicio 4: Mostrar la distancia del cubo y el cilindro de la esfera**
 
 Para completar el siguiente ejercicio, lo que he hecho ha sido crear un Script con el siguiente código y añadirlo a una nueva esfera que he creado. A esta nueva esfera le he dado el color azul para diferenciarla de la otra que es roja y que ya tenía otro Script añadido.
 Código del Script:
@@ -226,7 +226,7 @@ En la siguiente imagen se puede comprobar que el Script funciona correctamente a
 
 ![Ejercicio 4](Img/Ejercicio%204.png)
 
-5. Ejercicio 5: Vectores numéricos
+### **5. Ejercicio 5: Vectores numéricos**
 
 Para realizar el ejercicio, lo primero que he hecho ha sido crear 3 objetos 3D básicos, los cuales son una Esfera, un Cubo y un Cilindro en la misma escena. Después cree 2 Scripts, el primero se llama `DesplazamientoObjeto.cs`, el cual fue asignado a cada uno de estos 3 objetos. Para finalizar cree un EmptyObject el cual le asigné un nuevo script el cual llamé `MarcadorColocacion.cs`. Acto seguido en el inspector del EmptyObject, asigné los 3 objetos 3D básicos de la siguiente forma:
 - Objeto A: Sphere Green
@@ -340,7 +340,7 @@ Para ilustrar todos estos cambios, adjunto el siguiente gift en el que se apreci
 
 ![Ejercicio 5](Img/Ejercicio5.gif)
 
-6. Ejercicio 6: Velocidad al Cubo
+### **6. Ejercicio 6: Velocidad al Cubo**
 
 Para completar el ejercicio, lo que hice fue crear un cubo y adjuntarle un Script con el siguiente código: 
 
@@ -393,7 +393,7 @@ En el siguiente vídeo se muestra el funcionamiento del script:
 
 ![Ejercicio 6](Img/WASD.gif)
 
-7. Ejercicio 7: Tecla H con la función de disparo
+### **7. Ejercicio 7: Tecla H con la función de disparo**
 
 Para completar el ejercicio propuesto, en el `Input Manager`, concretamente en: `Edit → Project Settings → Input Manager → Axes`, auménte el `Size` en `Axes` de 30 a 31 y al último elemento lo llamé `Disparo`. Acto seguido, en `Positive Button` escribí `h`, en `Type` seleccioné `Key or Mouse Button`. Después de eso, añadí al EmptyObject que creé en el ejercicio 5, el siguiente Script:
 
@@ -420,7 +420,7 @@ En la siguiente imagen se demuestra el funcionamiento del Script:
 
 ![Ejercicio 7](Img/Ejercicio%207.png)
 
-8. Ejercicio 8: Movimiento del Cubo con Vector de Dirección y Velocidad
+### **8. Ejercicio 8: Movimiento del Cubo con Vector de Dirección y Velocidad**
 
 ## 🎯 Objetivo
 Para cumplir con lo que dicta el enunciado, he calculado el desplazamiento mediante la función `Translate(x, y, z)`, siendo `(x, y, z)` las componentes de `moveDirection`. La velocidad inicial es mayor que 1 y el cubo parte de una posición `y = 0`. Para ello, he creado un cubo 3D de color naranja esta vez, al cual le he añadido el siguiente Script:
@@ -518,7 +518,7 @@ A continuación comentaremos todas las situaciones indicadas en el enunciado de 
   - En **Space.World**, el cubo se mueve en **+X global**, ignorando su rotación.  
   - En **Space.Self**, el cubo se mueve en su **eje local X**, por lo que la trayectoria en el mundo es **diagonal** respecto al plano global. Por tanto, cambiar entre local y global no altera la magnitud del desplazamiento, pero sí su dirección espacial. El movimiento local sigue la orientación del objeto y el global, la del mundo.
 
-9. Ejercicio 9: Movimiento cubo y esfera con las teclas
+### **9. Ejercicio 9: Movimiento cubo y esfera con las teclas**
 Para resolver el ejercicio planteado, lo que hice fue añadir al EmptyObject ya existente y mencionado en anteriores ejercicios el siguiente Script:
 
 ```C#
@@ -612,7 +612,7 @@ De esta manera, el cubo se moverá respondiendo a las flechas y la Esfera con w-
 
 ![Esfera](Img/Esfera%20amarilla.gif)
 
-10. Ejercicio 10: Adaptación movimiento ejercicio 4
+### **10. Ejercicio 10: Adaptación movimiento ejercicio 4**
 Para desarrollar el siguiente ejercicio se crearon 3 objetos 3D básicos, un cubo, un cilindro y una esfera, en este caso los 3 de color negro para diferenciarlos. Después, se creó un script en C# el cual se asoció a la esfera con el siguiente código:
 
 ```C#
@@ -686,7 +686,7 @@ En el siguiente vídeo se muestra la ejecución y funcionamiento del Script:
 
 ![Ejercicio 10](Img/Ejercicio%2010.gif)
 
-11. Ejercicio 11: Adaptación movimiento ejercicio 5
+### **11. Ejercicio 11: Adaptación movimiento ejercicio 5**
 
 Para este ejercicio, lo que he hecho ha sido crear un Cubo y una Esfera, en este caso de color morado para que se diferencien y añadirle al cubo un Script con el siguiente código: 
 
@@ -748,7 +748,7 @@ En el siguiente GIF, se puede comprobar el funcionamiento del Script:
 
 ![Ejercicio 11](Img/Ejercicio%2011.gif)
 
-Ejercicio 12: Modificación ejercicio 11
+### **Ejercicio 12: Modificación ejercicio 11**
 
 Este ejercicio se resuelve de manera muy similar al ejercicio 11, de manera que en este el cubo rota y mira siempre hacia la esfera. Para resolverlo cree un cubo y una esfera de color Cian y adjunte al cubo el siguient Script:
 
@@ -876,7 +876,7 @@ Después de añadir este Script al cubo, en el inspector del cubo añadí la esf
 
 ![Ejercicio 12](Img/Ejercicio%2012.gif)
 
-Ejercicio 13: Avanzar hacia adelante mediante el eje Horizontal
+### **Ejercicio 13: Avanzar hacia adelante mediante el eje Horizontal**
 
 Para compltar el ejercicio, cree un cubo 3D de color verde azulado y le añadí el siguiente Script:
 
