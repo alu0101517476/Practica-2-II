@@ -466,9 +466,8 @@ public class MoveWithDirection : MonoBehaviour
 
 El desplazamiento aplicado en cada frame es proporcional al vector de dirección, a la velocidad y al tiempo transcurrido entre frames:
 
-\[
-\Delta \mathbf{p} = \mathbf{moveDirection} \cdot \text{speed} \cdot \Delta t
-\]
+$\Delta \mathbf{p} = \mathbf{moveDirection} \cdot \text{speed} \cdot \Delta t$
+
 
 El uso de `Time.deltaTime` garantiza que el movimiento sea independiente de los FPS.  
 El parámetro `useLocalSpace` permite conmutar entre movimiento **local** y global.
