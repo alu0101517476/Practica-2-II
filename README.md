@@ -528,8 +528,8 @@ using UnityEngine.InputSystem; // Nuevo Input System (Unity 6.x)
 public class MoveCubeAndSphere : MonoBehaviour
 {
     [Header("Referencias")]
-    public Transform cube;    // arrastra aquí tu Cubo
-    public Transform sphere;  // arrastra aquí tu Esfera
+    public Transform cube;   
+    public Transform sphere; 
 
     [Header("Velocidades (u/s)")]
     public float cubeSpeed = 5f;    // velocidad del cubo
@@ -944,3 +944,4 @@ De esta manera, el cubo cuando le das a ad, rota de dirección y avanza hacia es
 
 
 ![Ejercicio 13](Img/Ejercicio%2013.gif)
+
