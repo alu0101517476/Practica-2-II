@@ -876,7 +876,7 @@ Después de añadir este Script al cubo, en el inspector del cubo añadí la esf
 
 ### **Ejercicio 13: Avanzar hacia adelante mediante el eje Horizontal**
 
-Para compltar el ejercicio, cree un cubo 3D de color verde azulado y le añadí el siguiente Script:
+Para completar el ejercicio, cree un cubo 3D de color verde azulado y le añadí el siguiente Script:
 
 ```C#
 using UnityEngine;
@@ -944,5 +944,6 @@ De esta manera, el cubo cuando le das a ad, rota de dirección y avanza hacia es
 
 
 ![Ejercicio 13](Img/Ejercicio%2013.gif)
+
 
 
