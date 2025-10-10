@@ -619,10 +619,10 @@ using UnityEngine;
 public class SphereDistanceAndDeltaMove : MonoBehaviour
 {
     [Header("Referencias (asigna o autodetecta por Tag)")]
-    public Transform cube;              // arrástralo desde la escena o déjalo vacío y usa tags
-    public Transform cylinder;          // arrástralo desde la escena o déjalo vacío y usa tags
-    public string cubeTag = "cube";     // Tag del cubo (si quieres autodetectar)
-    public string cylinderTag = "cylinder"; // Tag del cilindro (si quieres autodetectar)
+    public Transform cube;              
+    public Transform cylinder;          
+    public string cubeTag = "cube";     // Tag del cubo 
+    public string cylinderTag = "cylinder"; // Tag del cilindro
 
     [Header("Movimiento (proporcional al tiempo)")]
     public Vector3 moveDirection = new Vector3(1f, 0f, 0f); // dirección editable en Inspector
@@ -944,4 +944,5 @@ De esta manera, el cubo cuando le das a ad, rota de dirección y avanza hacia es
 
 
 ![Ejercicio 13](Img/Ejercicio%2013.gif)
+
 
