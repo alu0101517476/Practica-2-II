@@ -388,7 +388,7 @@ public class ArrowSpeedReporter : MonoBehaviour
 
 ```
 
-De esta manera, cuando se pusen o bien WASD o las flechas el cubo calcula y muestra por consola `velocidad * valorHorizontal` en caso del eje horizontal y `velocidad * valorVertical` en el del ejer vertical.
+De esta manera, cuando se pusen o bien WASD o las flechas el cubo calcula y muestra por consola `velocidad * valorHorizontal` en caso del eje horizontal y `velocidad * valorVertical` en el del eje vertical.
 En el siguiente vídeo se muestra el funcionamiento del script:
 
 ![Ejercicio 6](Img/WASD.gif)
@@ -941,5 +941,6 @@ public class RotateAndAdvance : MonoBehaviour
 ```
 
 De esta manera, el cubo cuando le das a ad, rota de dirección y avanza hacia esa dirección. En el siguiente vídeo se puede apreciar este comportamiento:
+
 
 ![Ejercicio 13](Img/Ejercicio%2013.gif)
